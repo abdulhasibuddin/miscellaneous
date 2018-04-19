@@ -1,0 +1,47 @@
+SELECT a.* FROM loan a, loan b;
+SELECT a.* FROM loan a, loan b WHERE a.loan_id=b.loan_id;
+SELECT DISTINCT request_date FROM loan;
+SELECT loan_id, request_date FROM loan LIMIT 5;
+SELECT loan_id, request_date FROM loan LIMIT 5, 1;
+SELECT loan_id FROM loan ORDER BY cust_id, request_date;
+SELECT loan_id, request_date FROM loan ORDER BY request_date DESC, cust_id DESC;
+SELECT loan_id, request_date FROM loan ORDER BY request_date DESC LIMIT 1;
+SELECT loan_id, request_date FROM loan WHERE request_date != '04-04-2004';
+SELECT loan_id, request_date FROM loan WHERE request_date BETWEEN '04-04-2004' AND '07-07-2007';
+SELECT loan_id, request_date FROM loan WHERE (loan_id=1 OR loan_id=3) AND request_date='03-03-2003';
+SELECT loan_id, request_date FROM loan WHERE request_date IN ('04-04-2004','06-06-2006','07-07-2007');
+SELECT loan_id, request_date FROM loan WHERE request_date NOT IN ('04-04-2004','06-06-2006','07-07-2007');
+SELECT request_date FROM loan WHERE request_date LIKE '%01%';
+SELECT request_date FROM loan WHERE request_date LIKE '01%01';
+SELECT request_date FROM loan WHERE request_date LIKE '__-01-2001';
+SELECT request_date FROM loan WHERE request_date REGEXP '-01-';
+SELECT request_date FROM loan WHERE request_date REGEXP '.1-';
+SELECT request_date FROM loan WHERE request_date REGEXP '[0-5]-04-20[0-5]';
+SELECT loan_id FROM loan WHERE loan_id REGEXP '[^3-5]';
+SELECT CONCAT(cust_id, ' got ', loan) AS custom_column FROM loan;
+SELECT cust_id, loan, loan-1000 AS reduced_load FROM loan;
+SELECT SQRT(loan) FROM loan;
+SELECT AVG(loan), SUM(loan) AS sum, MAX(loan), MIN(loan), COUNT(loan) FROM loan WHERE loan_id>2;
+SELECT MAX(loan_id), request_date FROM loan GROUP BY request_date;
+SELECT loan_id, request_date FROM loan GROUP BY request_date ORDER BY loan_id DESC;
+SELECT loan_id, request_date FROM loan GROUP BY request_date HAVING loan_id>3;
+SELECT repay.cust_id, loan.loan FROM repay LEFT OUTER JOIN loan ON repay.cust_id=loan.cust_id;
+SELECT repay.cust_id, loan.loan FROM repay RIGHT OUTER JOIN loan ON repay.cust_id=loan.cust_id;
+
+SELECT loan.request_date, repay.reapy_date FROM loan, repay WHERE loan.request_date>'04-04-2004'
+UNION
+SELECT loan.request_date, repay.reapy_date FROM loan, repay WHERE repay.reapy_date>'10-10-2001';
+
+SELECT loan.request_date, repay.reapy_date FROM loan, repay WHERE loan.request_date>'04-04-2004'
+UNION ALL
+SELECT loan.request_date, repay.reapy_date FROM loan, repay WHERE repay.reapy_date>'10-10-2001';
+
+SELECT plant.Name AS name, SUM(pick.Weight) AS pound FROM pick JOIN plant WHERE pick.PlantID=plant.PlantID 
+AND (pick.pickDate BETWEEN '08-21-2005' AND '08-28-2005') AND (plant.Name='Corn' OR plant.Name='Tomato') 
+GROUP BY plant.Name;
+
+SELECT plant.Name AS name, SUM(pick.Weight) AS pounds FROM plant JOIN pick WHERE plant.PlantID=pick.PlantID 
+AND (pick.pickDate BETWEEN '08-16-2005' AND '08-22-2005') GROUP BY plant.Name;
+
+SELECT plant.Name AS name, ROUND(SUM(pick.Weight),2) AS pounds FROM plant JOIN pick WHERE plant.PlantID=
+pick.PlantID AND (pick.pickDate BETWEEN '07-16-2005' AND '08-28-2005') GROUP BY plant.Name;
